@@ -1,8 +1,6 @@
 # webServer1
 Web Server/Client
 
-Webserver.
-
 The program should be compiled by
 gcc wserve.c wserve_main.c -o se 
 on the server part and
@@ -11,6 +9,7 @@ on the client part
 
 Then the program can be run by entering
 ./se 
+
 or
 ./se --syntax1
 or
