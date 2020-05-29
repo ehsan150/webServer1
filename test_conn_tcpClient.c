@@ -1,14 +1,14 @@
 /*!
-@file conn_tcpclient.c
+@file conn_tcpClient.c
 @author Michal Musialik
 */
 /*
 This file is a slave socket that allows the user to create a remote
-connection to a master socket and allow to transfer varions command
+connection to a master socket and allow to transfer various command
 through wifi.
 */
 
-#include "conn_tcpclient.h"
+#include "conn_tcpClient.h"
 
 #define BUFFER_SIZE 32 /*Buffer size of messages*/
 

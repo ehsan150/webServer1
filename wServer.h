@@ -15,27 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *********************************************************************
- * @file wserve_main.c
+ * @file wServer.h
  * @brief header file for the server file of the web server project
  * @author: Seyed Ehsan Mohajerani
  * @Released: July 15 2011
  * @Last Updated: August 15 2011
  * @Refrences:
- * wserve.c
+ * wServer.c
  * @Application Note C/C++ Coding Standard Quantum Leaps, LLC
  *********************************************************************/
 
-#include "wserve.h"
-
-/*start main*/
-int main(int argc, char **argv){
-	if(argc > 1){
-		syntax_control(argc,argv);
-	}
-	socket_start();
-	socket_bind();
-	socket_listen();
-	accept_connection();
-	communication();
-	return 0;
-}
+/*Function prototypes*/
+void syntax_control(int conut,char **input_syntax);
+int socket_start(void);
+int socket_bind(void);
+int socket_listen(void);
+int accept_connection(void);
+void communication(void);
+void command_control(char* command);
+void file_process(char* command,char* root_dir,char* file_name);
+int num_dirs(const char* path);

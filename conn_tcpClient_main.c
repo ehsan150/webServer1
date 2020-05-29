@@ -7,8 +7,8 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include "conn_tcpclient.c"
-#include "conn_tcpclient.h"
+#include "conn_tcpClient.c"
+#include "conn_tcpClient.h"
 
 int main(int argc,char **argv){
   conn_socket_host(argv);

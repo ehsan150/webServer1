@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  *********************************************************************
- * @file wserver.c
+ * @file wServer.c
  * @brief header file for the server file of the web server project
  * @author: Seyed Ehsan Mohajerani
  * @Released: July 15 2011
@@ -40,7 +40,7 @@
 #include <netinet/in.h>/*For binding*/
 #include <netdb.h>/*For converting a hostname into a network address*/
 #include <unistd.h>/*For closing connections*/
-#include "wserve.h"
+#include "wServer.h"
 
 #define BUF_SIZE 1024/*A 1k buffer*/
 #define BACKLOG_QUEUE 5/*Number of pending connection*/
