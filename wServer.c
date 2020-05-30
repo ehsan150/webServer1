@@ -54,6 +54,7 @@ int reuse_chk;/*For reusing connection*/
 int accept_chk;/*For accepting connection*/
 int address_len;/*Argument to accept*/
 int debug_indicator=0;/*Indicator for debug printing mode*/
+int test_indicator=0;/*Indicator for test printing mode*/
 int port_number=DEFAULT_PORT;/*Port and the default value for it*/
 char received_data;/*Recieving variable*/
 char blocked_IP_1[16];/*Blocked IP 1*/
@@ -139,8 +140,12 @@ void communication(void){
 		else{
 			/*Printing debug message*/
 			if (debug_indicator==1){
-			printf("Received messege from client is %s\n", buffer);
+			printf("Received message from client is %s\n", buffer);
 			}
+			/*Printing test message*/
+			else if (test_indicator==1){
+            			printf("Test received message from client is %s\n", buffer);
+            			}
 			/*Checking command and replace with reply*/
 			command_control(buffer);
 			send(accept_chk,buffer,strlen(buffer),0);
@@ -159,6 +164,12 @@ void syntax_control(int count,char** input_syntax){
 			/*Printing debug message*/
 			printf (" Debug indicator is on \n");
 		}
+		else if (strcmp(input_syntax[i], "--test") == 0){
+        			test_indicator=1;
+        			start_test();
+        			/*Printing test message*/
+        			printf (" Test indicator is on \n");
+        		}
 		else if (strcmp(input_syntax[i], "--port") == 0){
 				port_number=atoi(input_syntax[i+1]);
 		}
@@ -175,6 +186,11 @@ void syntax_control(int count,char** input_syntax){
 		printf("Blocked IP 1 is %s\n", blocked_IP_1);
 		printf("Blocked IP 2 is %s\n", blocked_IP_2);
 	}
+	/*Printing test message*/
+    else if (test_indicator==1){
+    		printf("Test blocked IP 1 is %s\n", blocked_IP_1);
+    		printf("Test blocked IP 2 is %s\n", blocked_IP_2);
+    	}
 }
 
 /*Control input receivnig from the client*/

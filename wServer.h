@@ -25,6 +25,8 @@
  * @Application Note C/C++ Coding Standard Quantum Leaps, LLC
  *********************************************************************/
 
+    #include <stdbool.h>
+
 /*Function prototypes*/
 void syntax_control(int conut,char **input_syntax);
 int socket_start(void);
@@ -35,3 +37,10 @@ void communication(void);
 void command_control(char* command);
 void file_process(char* command,char* root_dir,char* file_name);
 int num_dirs(const char* path);
+
+void start_test(void);
+void testing(char *test1);
+void propcheck(bool (*property)(), int n);
+bool propistrue;
+int makeRandInt (int maxValue);
+bool property_client_connection_check(void);
