@@ -28,7 +28,7 @@ int conn_socket_host(char **argv){
 		exit(EXIT_FAILURE);
 	}
 	else{
-		printf("Remote host is %s\n",argv[1]);
+		printf("Remote host is: %s\n",argv[1]);
 	}
 return 0;
 }
@@ -50,7 +50,7 @@ int conn_socket_binding(char **port){
     int port_num=atoi(port[2]);
 	connecting.sin_family = AF_INET;
 	connecting.sin_port = htons(port_num);
-	printf (" %s %d %s", "Port", port_num, "is Bound to the socket  \n");
+	printf (" %s %d %s", "Port", port_num, "is Bound to the socket \n");
 	connecting.sin_addr= *((struct in_addr *)Host->h_addr);
 	memset(&(connecting.sin_zero),'\0',8);/*Zerong the rest of the structure*/
 	return 0;
@@ -88,7 +88,7 @@ int conn_data_passing(void){
 	/*Receiving a response from master socket*/
 	byte = recv(socket_tcp,data_receive,BUFFER_SIZE,0);
 	data_receive[byte]= '\0';
-	printf("Received response from master socket is %s \n", data_receive);
+	printf("Received response from master socket is: %s \n", data_receive);
 	}
 	return 0;
 }

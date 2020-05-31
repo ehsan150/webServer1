@@ -38,9 +38,10 @@
 
 //Pre-configurations and run testsets
 void start_test(void){
-    printf("Test started \n");
+    printf("******Test started \n");
     srand(time(NULL)); //Initialize random integer generator
     testSet("client connection test \n");
+    printf("******Test ended \n");
     }
 int makeRandInt (int maxValue){
     int r = rand()%maxValue; //Generate a random integer between 0 and maxValue
@@ -50,7 +51,7 @@ void propCheck(bool (*property)(), int n){
     int passed = 0;
     int failed = 0;
     int total = 0;
-    for (int total ; total < n; ++total){
+    for (total ; total < n; ++total){
         int r = makeRandInt(255);
         printf("Testing number %d is %d \n", total,r);
         propIsTrue = (property(n)==true ) ;
@@ -63,9 +64,9 @@ void propCheck(bool (*property)(), int n){
             break;
             }
         }
-    printf("Total number of tests is %d \n", total);
-    printf("Number of passed tests is %d \n", passed);
-    printf("Number of failed tests is %d \n", failed);
+    printf("Total number of tests is: %d \n", total);
+    printf("Number of passed tests is: %d \n", passed);
+    printf("Number of failed tests is: %d \n", failed);
     }
 
 //Testsets

@@ -57,12 +57,50 @@ int debug_indicator=0;/*Indicator for debug printing mode*/
 int test_indicator=0;/*Indicator for test printing mode*/
 int port_number=DEFAULT_PORT;/*Port and the default value for it*/
 char received_data;/*Recieving variable*/
-char blocked_IP_1[16];/*Blocked IP 1*/
-char blocked_IP_2[16];/*Blocked IP 2*/
+char blocked_IP_1[16]="No blocked IP";/*Blocked IP 1*/
+char blocked_IP_2[16]="No blocked IP";/*Blocked IP 2*/
 char root_dir[100];/*Root Dir*/
 /*structs*/
 struct sockaddr_in server_address;/*server*/
 struct sockaddr_in client_address;/*client*/
+
+/*Control syntax receiving from the command line*/
+void syntax_control(int count,char** input_syntax){
+	/*Loop for checking the syntax*/
+	int i=0;
+	for (i ; i < count;i++){
+		if (strcmp(input_syntax[i], "--debug") == 0){
+			debug_indicator=1;
+			/*Printing debug message*/
+			printf ("\n Debug indicator is on \n");
+		    }
+		else if (strcmp(input_syntax[i], "--test") == 0){
+            test_indicator=1;
+            /*Printing test message*/
+            printf ("\n Test indicator is on \n");
+            }
+		else if (strcmp(input_syntax[i], "--port") == 0){
+            port_number=atoi(input_syntax[i+1]);
+		    }
+		else if (strcmp(input_syntax[i], "--block") == 0){
+            strcpy(blocked_IP_1,input_syntax[i+1]);
+            strcpy(blocked_IP_2,input_syntax[i+2]);
+            }
+		else if (strcmp(input_syntax[i], "--webroot") == 0){
+			strcpy(root_dir,input_syntax[i+1]);
+		    }
+	    }
+	/*Printing debug message*/
+	if (debug_indicator==1){
+		printf("Blocked IP 1 is: %s\n", blocked_IP_1);
+		printf("Blocked IP 2 is: %s\n", blocked_IP_2);
+	    }
+	/*Printing test message*/
+    else if (test_indicator==1){
+        printf("Test blocked IP 1 is: %s\n", blocked_IP_1);
+        printf("Test blocked IP 2 is: %s\n", blocked_IP_2);
+    	}
+    }
 
 /* Starting a socket*/
 int socket_start(void){
@@ -72,11 +110,10 @@ int socket_start(void){
 	if (my_socket<0 ) {
 		perror("Error creating socket");
 		return -1;
-	}
+	    }
 	printf (" Socket created \n");
 	return 0;
-}
-
+    }
 /*Binding port Defined to the created socket*/
 int socket_bind(){
 	/* Type of created socket */
@@ -91,11 +128,10 @@ int socket_bind(){
 	if (bind_chk<0 ){
 		perror("Error binding socket");
 		exit(EXIT_FAILURE);
-	}
+    	}
 	printf (" %s %d %s", "Port", port_number, "is Bound to the socket  \n");
 	return 0;
-}
-
+    }
 /*Listening for connections*/
 int socket_listen(void){
 	listen_chk= listen(my_socket, BACKLOG_QUEUE);
@@ -106,21 +142,19 @@ int socket_listen(void){
 	}
 	printf (" %s ", "Listening for connection  \n");
 	return 0;
-}
-
+    }
 /*Accept connection*/
 int accept_connection(void){
-	accept_chk= accept(my_socket, (struct sockaddr *)
-	&client_address, &address_len);
-	/* Check if the accept were done successfully*/
-	if (accept_chk<0 ){
-		perror("Error accepting socket");
-		exit(EXIT_FAILURE);
-		}
-	printf (" %s ", "Connection accpeted  \n");
-	return 0;
-}
-
+    accept_chk= accept(my_socket, (struct sockaddr *)
+    &client_address, &address_len);
+    /* Check if the accept were done successfully*/
+    if (accept_chk<0 ){
+        perror("Error accepting socket");
+        exit(EXIT_FAILURE);
+        }
+    printf (" %s ", "Connection accepted  \n");
+    return 0;
+    }
 /*Recieving data ,Starting the Server*/
 void communication(void){
 	/*Buffer for recieving data*/
@@ -137,105 +171,62 @@ void communication(void){
 			free (buffer);
 			break;
 		}
-
 		else{
 		    if (strstr(buffer,"stop") != NULL){
-                    			close(my_socket);
-                    			//close(accept_chk);
-                    			printf(" %s ", "Closing connection\n");
-                    			socket_start();
-                    			//socket_bind();
-                            	//socket_listen();
-                            	//accept_connection();
-                    		}
-
+                close(my_socket);
+                //close(accept_chk);
+                printf(" %s ", "Closing connection\n");
+                socket_start();
+                //socket_bind();
+                //socket_listen();
+                //accept_connection();
+                }
 			/*Printing debug message*/
 			if (debug_indicator==1){
-			printf("Received message from client is %s\n", buffer);
-			}
+			    printf("Received message from client is: %s\n", buffer);
+			    }
 			/*Printing test message*/
 			else if (test_indicator==1){
-            			printf("Test received message from client is %s\n", buffer);
-            			}
+                printf("Test received message from client is: %s\n", buffer);
+            	}
 			/*Checking command and replace with reply*/
 			command_control(buffer);
 			send(accept_chk,buffer,strlen(buffer),0);
-		}
+		    }
+	    }
+    }
 
-
-	}
-}
-/*Control syntax receivnig from the command line*/
-void syntax_control(int count,char** input_syntax){
-	/*Loop for checking the syntax*/
-	int i=0;
-	for (i ; i < count;i++){
-		if (strcmp(input_syntax[i], "--debug") == 0){
-			debug_indicator=1;
-			/*Printing debug message*/
-			printf ("\n Debug indicator is on \n");
-		}
-		else if (strcmp(input_syntax[i], "--test") == 0){
-        			test_indicator=1;
-        			start_test();
-        			/*Printing test message*/
-        			printf ("\n Test indicator is on \n");
-        		}
-		else if (strcmp(input_syntax[i], "--port") == 0){
-				port_number=atoi(input_syntax[i+1]);
-		}
-		else if (strcmp(input_syntax[i], "--block") == 0){
-				strcpy(blocked_IP_1,input_syntax[i+1]);
-				strcpy(blocked_IP_2,input_syntax[i+2]);
-		}
-		else if (strcmp(input_syntax[i], "--webroot") == 0){
-				strcpy(root_dir,input_syntax[i+1]);
-		}
-	}
-	/*Printing debug message*/
-	if (debug_indicator==1){
-		printf("Blocked IP 1 is %s\n", blocked_IP_1);
-		printf("Blocked IP 2 is %s\n", blocked_IP_2);
-	}
-	/*Printing test message*/
-    else if (test_indicator==1){
-    		printf("Test blocked IP 1 is %s\n", blocked_IP_1);
-    		printf("Test blocked IP 2 is %s\n", blocked_IP_2);
-    	}
-}
-
-/*Control input receivnig from the client*/
+/*Control input receiving from the client*/
 void command_control(char* command){ 
 	if (strcmp(command, "INFO") == 0){
 		strcpy(command,"Version = 1");
-	}
+	    }
 	else if (strcmp(command, "GET /") == 0){
-			/*Printing debug message*/
-			if (debug_indicator==1){
-				printf("GET is received \n");
-			}
-			file_process(command,root_dir,"index.htm");
-	}
-}
-
+        /*Printing debug message*/
+        if (debug_indicator==1){
+            printf("GET is received \n");
+            }
+		file_process(command,root_dir,"index.htm");
+	    }
+    }
 void file_process(char* command,char* root_dir,char* file_name){
 	FILE *file;
 	int size_of_file;
-		if ((file = fopen(file_name, "r"))==NULL){
-		printf("Error Opening File.\n");
-		exit(EXIT_FAILURE);
-		}
-		else {
-			fseek(file, 0L, SEEK_END);
-			size_of_file= ftell(file);
-			fseek(file, 0L, SEEK_SET);
-			char read_buffer[size_of_file];
-			fread(read_buffer, 1, size_of_file-1, file);
-			strcpy(command,read_buffer);
-			/*Printing debug message*/
-			if (debug_indicator==1){
-				printf("File is %s", read_buffer);
-			}
-		}
+    if ((file = fopen(file_name, "r"))==NULL){
+        printf("Error Opening File.\n");
+        exit(EXIT_FAILURE);
+        }
+    else {
+        fseek(file, 0L, SEEK_END);
+        size_of_file= ftell(file);
+        fseek(file, 0L, SEEK_SET);
+        char read_buffer[size_of_file];
+        fread(read_buffer, 1, size_of_file-1, file);
+        strcpy(command,read_buffer);
+        /*Printing debug message*/
+        if (debug_indicator==1){
+            printf("File is %s", read_buffer);
+            }
+        }
 	fclose(file);
-}
+    }
