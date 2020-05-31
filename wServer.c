@@ -137,7 +137,18 @@ void communication(void){
 			free (buffer);
 			break;
 		}
+
 		else{
+		    if (strstr(buffer,"stop") != NULL){
+                    			close(my_socket);
+                    			//close(accept_chk);
+                    			printf(" %s ", "Closing connection\n");
+                    			socket_start();
+                    			//socket_bind();
+                            	//socket_listen();
+                            	//accept_connection();
+                    		}
+
 			/*Printing debug message*/
 			if (debug_indicator==1){
 			printf("Received message from client is %s\n", buffer);
@@ -162,13 +173,13 @@ void syntax_control(int count,char** input_syntax){
 		if (strcmp(input_syntax[i], "--debug") == 0){
 			debug_indicator=1;
 			/*Printing debug message*/
-			printf (" Debug indicator is on \n");
+			printf ("\n Debug indicator is on \n");
 		}
 		else if (strcmp(input_syntax[i], "--test") == 0){
         			test_indicator=1;
         			start_test();
         			/*Printing test message*/
-        			printf (" Test indicator is on \n");
+        			printf ("\n Test indicator is on \n");
         		}
 		else if (strcmp(input_syntax[i], "--port") == 0){
 				port_number=atoi(input_syntax[i+1]);
